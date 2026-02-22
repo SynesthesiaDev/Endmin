@@ -16,7 +16,9 @@
     <Content Include="..\.dockerignore">
       <Link>.dockerignore</Link>
     </Content>
-    ł
+  </ItemGroup>
+
+  <ItemGroup>
     <TrimmerRootAssembly Include="Octokit"/>
   </ItemGroup>
 
