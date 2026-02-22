@@ -73,9 +73,6 @@ public static class Watcher
         }
     }
 
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(Branch))]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(GitHubCommit))]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(GitReference))]
     private static async Task checkAndUpdateApp(App app)
     {
         var branch = await github_client.Repository.Branch.Get(app.GithubUser, app.GithubRepo, app.GithubBranch);
@@ -101,10 +98,6 @@ public static class Watcher
         }
     }
 
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(CheckRunsResponse))]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(CheckRun))]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(CombinedCommitStatus))]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(CommitStatus))]
     private static async Task<bool> isBuildFinished(string owner, string repo, string sha)
     {
         var checkRuns = await github_client.Check.Run.GetAllForReference(owner, repo, sha);

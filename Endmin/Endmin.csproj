@@ -5,10 +5,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PublishAot>true</PublishAot>
     <InvariantGlobalization>true</InvariantGlobalization>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <TrimMode>partial</TrimMode>
     <OptimizationPreference>Speed</OptimizationPreference>
   </PropertyGroup>
 
@@ -16,10 +14,6 @@
     <Content Include="..\.dockerignore">
       <Link>.dockerignore</Link>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <TrimmerRootAssembly Include="Octokit"/>
   </ItemGroup>
 
   <ItemGroup>

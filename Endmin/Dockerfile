@@ -1,7 +1,4 @@
-﻿# 1. Build Stage - Use the standard Debian-based SDK (faster/more stable for AOT)
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-# Install clang and zlib (Debian names)
-RUN apt-get update && apt-get install -y clang zlib1g-dev
+﻿FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 COPY ["Endmin/Endmin.csproj", "Endmin/"]
@@ -13,18 +10,18 @@ WORKDIR "/src/Endmin"
 RUN dotnet publish "./Endmin.csproj" \
     -c Release \
     -r linux-arm64 \
-    -o /app/publish \
-    /p:PublishAot=true \
-    /p:StripSymbols=true \
-    /p:TrimMode=partial \
-    --self-contained
-    
-FROM alpine:latest AS final
+    --self-contained true \
+    -p:PublishSingleFile=true \
+    -p:PublishReadyToRun=true \
+    -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-alpine AS final
 WORKDIR /app
 
-RUN apk add --no-cache libstdc++ gcompat icu-libs
+RUN apk add --no-cache icu-libs libstdc++ gcompat
 
-COPY --from=build /app/publish/Endmin .
+COPY --from=build /app/publish .
+
 RUN chmod +x ./Endmin
 
 ENTRYPOINT ["./Endmin"]
