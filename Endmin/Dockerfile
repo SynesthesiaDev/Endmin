@@ -16,6 +16,7 @@ RUN dotnet publish "./Endmin.csproj" \
     -o /app/publish \
     /p:PublishAot=true \
     /p:StripSymbols=true \
+    /p:TrimMode=partial \
     --self-contained
     
 FROM alpine:latest AS final
