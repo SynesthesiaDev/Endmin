@@ -6,6 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>link</TrimMode>
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+    <GCLatencyMode>LowLatency</GCLatencyMode>
   </PropertyGroup>
 
   <ItemGroup>

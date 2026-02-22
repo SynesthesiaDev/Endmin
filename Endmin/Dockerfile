@@ -1,6 +1,8 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
+ENV DOTNET_GCLatencyMode=1
+ENV DOTNET_GCHeapHardLimitPercent=10
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
