@@ -15,7 +15,14 @@ WORKDIR "/src/Endmin"
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Endmin.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false --no-restore -r linux-musl-arm64
+
+RUN dotnet publish "./Endmin.csproj" \
+    -c $BUILD_CONFIGURATION \
+    -o /app/publish \
+    --no-restore \
+    --self-contained false\
+    p:UseAppHost=false \
+    p:PublishTrimmed=false
 
 FROM base AS final
 WORKDIR /app
