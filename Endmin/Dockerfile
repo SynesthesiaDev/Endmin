@@ -16,7 +16,7 @@ RUN dotnet build "./Endmin.csproj" -c $BUILD_CONFIGURATION -o /app/build --no-re
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Endmin.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false --no-restore --no-build
+RUN dotnet publish "./Endmin.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false --no-restore --no-build -r linux-musl-arm64
 
 FROM base AS final
 WORKDIR /app
