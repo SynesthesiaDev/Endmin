@@ -20,8 +20,6 @@ public static class Logger
 
     public record LogCategory(string Name);
 
-    public record LogEvent(string Message, LogSeverity Severity, LogCategory Category, bool DisplayTimestamp, Guid Uuid);
-
     public record LogSeverity(string Name, ConsoleColor? ConsoleColor = null, string DebugOverlayColor = "#4f4f4f");
 
     private static void log(string message, LogSeverity severity, LogCategory category, bool displayTimestamp)

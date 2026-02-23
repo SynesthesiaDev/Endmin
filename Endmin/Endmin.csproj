@@ -9,7 +9,7 @@
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>link</TrimMode>
     <ServerGarbageCollection>false</ServerGarbageCollection>
-    <GCLatencyMode>LowLatency</GCLatencyMode>
+    <GarbageCollectionAdaptationMode>0</GarbageCollectionAdaptationMode>
   </PropertyGroup>
 
   <ItemGroup>

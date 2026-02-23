@@ -40,7 +40,7 @@ public static class Watcher
 
     private static async Task updateTinyFile()
     {
-        var encodedString = current_sha_hash.Aggregate("", (current, shaPair) => current + $"{shaPair.Key}={shaPair.Value},");
+        var encodedString = string.Join(",", current_sha_hash.Select(p => $"{p.Key}={p.Value}"));
         await File.WriteAllTextAsync(tiny_file, encodedString);
     }
 
@@ -57,7 +57,6 @@ public static class Watcher
 
     private static async Task poll()
     {
-        Logger.Verbose("Polling version changes..");
         foreach (var app in ConfigurationManager.Current.Apps)
         {
             try
@@ -70,6 +69,7 @@ public static class Watcher
                 Logger.Exception(ex, Logger.Network);
             }
         }
+        GC.Collect(2, GCCollectionMode.Aggressive, blocking: true, compacting: true);
     }
 
     private static async Task checkAndUpdateApp(App app)
@@ -90,6 +90,7 @@ public static class Watcher
 
             current_sha_hash[app.Name] = value;
             await updateTinyFile();
+            GC.Collect(2, GCCollectionMode.Aggressive, blocking: true, compacting: true);
         }
         else
         {
