@@ -21,8 +21,8 @@ RUN dotnet publish "./Endmin.csproj" \
     -o /app/publish \
     --no-restore \
     --self-contained false\
-    p:UseAppHost=false \
-    p:PublishTrimmed=false
+    /p:UseAppHost=false \
+    /p:PublishTrimmed=false
 
 FROM base AS final
 WORKDIR /app
