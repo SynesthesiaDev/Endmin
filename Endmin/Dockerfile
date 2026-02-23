@@ -9,10 +9,10 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Endmin/Endmin.csproj", "Endmin/"]
-RUN dotnet restore "Endmin/Endmin.csproj"
+RUN dotnet restore "Endmin/Endmin.csproj" -r linux-musl-arm64
 COPY . .
 WORKDIR "/src/Endmin"
-RUN dotnet build "./Endmin.csproj" -c $BUILD_CONFIGURATION -o /app/build --no-restore
+RUN dotnet build "./Endmin.csproj" -c $BUILD_CONFIGURATION -o /app/build --no-restore -r linux-musl-arm64
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
