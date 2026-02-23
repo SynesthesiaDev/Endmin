@@ -12,11 +12,10 @@ COPY ["Endmin/Endmin.csproj", "Endmin/"]
 RUN dotnet restore "Endmin/Endmin.csproj" -r linux-musl-arm64
 COPY . .
 WORKDIR "/src/Endmin"
-RUN dotnet build "./Endmin.csproj" -c $BUILD_CONFIGURATION -o /app/build --no-restore -r linux-musl-arm64
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Endmin.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false --no-restore --no-build -r linux-musl-arm64
+RUN dotnet publish "./Endmin.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false --no-restore -r linux-musl-arm64
 
 FROM base AS final
 WORKDIR /app
