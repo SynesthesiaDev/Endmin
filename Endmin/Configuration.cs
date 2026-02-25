@@ -28,6 +28,12 @@ public partial class App
     public string ContainerName { get; set; }
 
     [TomlValueOnSerialized]
+    public string? HostDataPath { get; set; }
+
+    [TomlValueOnSerialized]
+    public string? ContainerDataPath { get; set; }
+
+    [TomlValueOnSerialized]
     public string DockerRepository { get; set; }
 
     [TomlValueOnSerialized]
