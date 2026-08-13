@@ -26,12 +26,12 @@ internal static class Endmin
 
         HashesFile.ReadFile();
 
-        var dockerExists = await Deployment.IsDockerRunningAsync();
-        if (!dockerExists)
-        {
-            Log.Error("Docker is not running! Cannot use Endmin, exiting..");
-            Environment.Exit(1);
-        }
+        // var dockerExists = await Deployment.IsDockerRunningAsync();
+        // if (!dockerExists)
+        // {
+        //     Log.Error("Docker is not running! Cannot use Endmin, exiting..");
+        //     Environment.Exit(1);
+        // }
 
         var cancellationTokenSource = new CancellationTokenSource();
 
