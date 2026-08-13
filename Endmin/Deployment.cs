@@ -4,24 +4,25 @@
 using System.Diagnostics;
 using Docker.DotNet;
 using Docker.DotNet.Models;
+using Serilog;
 
 namespace Endmin;
 
 public static class Deployment
 {
-    private static readonly DockerClient docker_client = new DockerClientConfiguration().CreateClient();
+    public static readonly DockerClient DOCKER_CLIENT = new DockerClientConfiguration().CreateClient();
 
     public static async Task DeployContainer(App app, string sha)
     {
         var image = $"{app.DockerRepository}:{sha}";
-        Logger.Debug($"[{app.Name}] Updating image {image}..", Logger.Network);
+        Log.Debug("[{AppName}] Updating image {Image}..", app.Name, image);
 
-        await docker_client.Images.CreateImageAsync(new ImagesCreateParameters { FromImage = app.DockerRepository, Tag = sha }, null, new Progress<JSONMessage>());
+        await DOCKER_CLIENT.Images.CreateImageAsync(new ImagesCreateParameters { FromImage = app.DockerRepository, Tag = sha }, null, new Progress<JSONMessage>());
 
         try
         {
-            await docker_client.Containers.StopContainerAsync(app.ContainerName, new ContainerStopParameters());
-            await docker_client.Containers.RemoveContainerAsync(app.ContainerName, new ContainerRemoveParameters());
+            await DOCKER_CLIENT.Containers.StopContainerAsync(app.ContainerName, new ContainerStopParameters());
+            await DOCKER_CLIENT.Containers.RemoveContainerAsync(app.ContainerName, new ContainerRemoveParameters());
         }
         catch (Exception e)
         {
@@ -51,22 +52,21 @@ public static class Deployment
                 hostConfig.Binds = new List<string> { $"{app.HostDataPath}:{containerPath}" };
             }
 
-            var createResponse = await docker_client.Containers.CreateContainerAsync(new CreateContainerParameters
+            var createResponse = await DOCKER_CLIENT.Containers.CreateContainerAsync(new CreateContainerParameters
             {
                 Image = image,
                 Name = app.ContainerName,
                 HostConfig = hostConfig
             });
 
-            Logger.Debug($"[{app.Name}] Update complete, starting container {app.ContainerName}..", Logger.Io);
-            await docker_client.Containers.StartContainerAsync(createResponse.ID, null);
-            await docker_client.Images.PruneImagesAsync(new ImagesPruneParameters());
-            Logger.Debug($"[{app.Name}] Container {app.ContainerName} running!", Logger.Io);
+            Log.Debug("[{AppName}] Update complete, starting container {AppContainerName}..", app.Name, app.ContainerName);
+            await DOCKER_CLIENT.Containers.StartContainerAsync(createResponse.ID, null);
+            await DOCKER_CLIENT.Images.PruneImagesAsync(new ImagesPruneParameters());
+            Log.Debug("[{AppName}] Container {AppContainerName} running!", app.Name, app.ContainerName);
         }
         catch (Exception ex)
         {
-            Logger.Error($"[{app.Name}] Failed to start docker container", Logger.Io);
-            Logger.Exception(ex, Logger.Io);
+            Log.Error(ex, "[{AppName}] Failed to start docker container", app.Name);
         }
     }
 
@@ -80,12 +80,25 @@ public static class Deployment
                 using var process = Process.Start("chmod", $"-R 777 {path}");
                 if (process != null) await process.WaitForExitAsync();
 
-                Logger.Debug($"Permissions set to 777 for {path}", Logger.Io);
+                Log.Debug($"Permissions set to 777 for {path}");
             }
             catch (Exception ex)
             {
-                Logger.Error($"Failed to set permissions for {path}: {ex.Message}");
+                Log.Error(ex, $"Failed to set permissions for {path}: {ex.Message}");
             }
+        }
+    }
+
+    public static async Task<bool> IsDockerRunningAsync()
+    {
+        try
+        {
+            await DOCKER_CLIENT.System.PingAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
         }
     }
 }

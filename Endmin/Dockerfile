@@ -1,11 +1,11 @@
-﻿FROM mcr.microsoft.com/dotnet/runtime:8.0-alpine AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 USER $APP_UID
 WORKDIR /app
 ENV DOTNET_GCLatencyMode=0
 ENV DOTNET_GCHeapHardLimitPercent=70
 ENV DOTNET_GCConserveMemory=9
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Endmin/Endmin.csproj", "Endmin/"]
