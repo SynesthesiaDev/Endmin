@@ -8,7 +8,7 @@ using SynesthesiaDev.Synx.Codon;
 
 namespace Endmin;
 
-public class HashesFile
+public static class HashesFile
 {
     public static Dictionary<string, string> Hashes => contents.Hashes;
 
