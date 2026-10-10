@@ -1,7 +1,7 @@
 ﻿# 🐧 Endmin
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/SynesthesiaDev/Endmin/deploy.yml?branch=main&style=for-the-badge&label=Build&color=33cc33)
-![NuGet Version](https://img.shields.io/github/v/release/SynesthesiaDev/Nocturne?style=for-the-badge&color=blue&label=Release)
+![Last commit](https://img.shields.io/github/last-commit/SynesthesiaDev/Endmin?style=for-the-badge&color=blue&label=Last%20Build)
 
 ![Target .NET](https://img.shields.io/badge/.NET-10.0-512bd4?style=for-the-badge&logo=dotnet)
 ![License](https://img.shields.io/badge/License-MIT-black?style=for-the-badge)
